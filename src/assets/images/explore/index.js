@@ -1,0 +1,1 @@
+export const ExploreDaringbadi = require("./daringbadi.jpg")

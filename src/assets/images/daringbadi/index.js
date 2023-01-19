@@ -1,0 +1,8 @@
+export const CoffeeGarden = require('./Coffee.jpg')
+export const HillView = require('./hillviewpark.jpg')
+export const Mandasaru = require('./mandasaru.jpg')
+export const Midubanda = require('./midubanda.jpg')
+export const Pangali = require('./pangalivalley.jpg')
+export const Pine = require('./pineforest.jpg')
+export const Sunset = require('./sunsetvalley.jpg')
+export const Kalinga = require('./kalinga.jpg')

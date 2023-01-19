@@ -1,0 +1,82 @@
+const dataDayOne = [
+  {
+    time: "04:00",
+    title: "Trip Start",
+    description: "Bhubaneswar to daringbadi (260 km)",
+  },
+  {
+    time: "10:00",
+    title: "1st checkpoint",
+    description: "Kalinga ghati On the way (210 km)",
+  },
+  {
+    time: "12:00",
+    title: "Hotel Check in",
+    description: "Fresh up and have the lunch",
+  },
+  {
+    time: "14:30",
+    title: "2nd Checkpoint",
+    description: "Pangali Valley (12 km). If time permits",
+  },
+  {
+    time: "15:15",
+    title: "3rd Checkpoint",
+    description: "Duluri Waterfall",
+  },
+  {
+    time: "16:00",
+    title: "4th Checkpoint",
+    description: "Coffee Garden",
+  },
+  {
+    time: "17:00",
+    title: "Final Checkpoint of the day",
+    description: "Sunset point Silent valley",
+  },
+  {
+    time: "18:30",
+    title: "Back to stay",
+    description: "Bonfire with some untold stories",
+  },
+];
+
+
+
+const dataDayTwo = [
+  {
+    time: "04:00",
+    title: "1st Checkpoint",
+    description: "Mandasaru (35 km), specially to enjoy the sunrise from top of the hill.",
+  },
+  {
+    time: "07:30",
+    title: "Back to room",
+    description: "freshup & have the brkfast",
+  },
+  {
+    time: "09:00",
+    title: "2nd checkpoint",
+    description: "Midubandha waterfall (17 km)",
+  },
+  {
+    time: "12:00",
+    title: "lunch",
+    description: "Have some delicious local daringbadi food",
+  },
+  {
+    time: "14:00",
+    title: "3rd Checkpoint",
+    description: "pine tree forest",
+  },
+  {
+    time: "16:00",
+    title: "Final Checkpoint",
+    description: "Buterfly park & Hill view park(spend maximum time in hill view park)",
+  },
+  {
+    time: "19:00",
+    title: "Back to stay",
+    description: "Bonfire and memories",
+  },
+];
