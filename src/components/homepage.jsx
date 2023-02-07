@@ -5,8 +5,12 @@ import {
   Dimensions,
   Image,
   ScrollView,
+  Button,
+  TouchableOpacity,
+  BackHandler,
+  Alert,
 } from 'react-native';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Adventure,
   Beach,
@@ -17,17 +21,121 @@ import {
   Waterfall,
   Winter,
 } from '../assets/images/categoryicon';
-import {Chalal, Dharamshala, Goa, Hampi, Jaipur, Jibhi, Kasol, Kovalam, Mahabalipuram, Manali, Mysore, Nainital, Pondicherry, Pushkar, Rishikesh, Shillong, Udaipur, Varanasi, Varkala, Ziro} from '../assets/images/place';
-import { MapIcon } from '../assets/images/icons';
+import {
+  Chalal,
+  Dharamshala,
+  Goa,
+  Hampi,
+  Jaipur,
+  Jibhi,
+  Kasol,
+  Kovalam,
+  Mahabalipuram,
+  Manali,
+  Mysore,
+  Nainital,
+  Pondicherry,
+  Pushkar,
+  Rishikesh,
+  Shillong,
+  Udaipur,
+  Varanasi,
+  Varkala,
+  Ziro,
+} from '../assets/images/place';
+import {MapIcon, Navicon, Wishlist} from '../assets/images/icons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import Navbar from './navbar';
 
 const screenHeight = Dimensions.get('window').height;
 const screenWidth = Dimensions.get('window').width;
 
-const Homepage = () => {
+const Homepage = props => {
+  const {navigation} = props;
+  const [value, setValue] = useState('');
+
+  const getValue = async () => {
+    await AsyncStorage.getItem('user').then(val => {
+      setValue(val);
+    });
+  };
+
+  useEffect(() => {
+    getValue();
+  }, []);
+
+  useEffect(() => {
+    const backAction = () => {
+      Alert.alert('Hold on!', 'Are you sure you want to go exit?', [
+        {
+          text: 'Cancel',
+          onPress: () => null,
+          style: 'cancel',
+        },
+        {text: 'YES', onPress: () => BackHandler.exitApp()},
+      ]);
+      return true;
+    };
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      backAction,
+    );
+    return () => backHandler.remove();
+  }, []);
+
+
   return (
     <View style={{height: '100%', width: '100%'}}>
       <View style={styles.Homepage}>
         <ScrollView>
+          {/* Navbar */}
+          <View style={styles.navbarmain} transparent={true}>
+            <View style={styles.navbar_maindiv}>
+              <TouchableOpacity
+                activeOpacity={1}
+                onPress={() => {
+                  navigation.navigate('HOMEPAGE');
+                }}>
+                <Image style={styles.menubar} source={Navicon} />
+              </TouchableOpacity>
+              <TouchableOpacity
+                activeOpacity={1}
+                onPress={() => {
+                  navigation.navigate('MYPLAN');
+                }}>
+                <Image style={styles.Wishlist} source={Wishlist} />
+              </TouchableOpacity>
+            </View>
+          </View>
+
+
+          {/* Topbar */}
+          <View style={styles.topbar}>
+            <View style={styles.namecontainer}>
+              <Text style={{color: 'black', fontWeight: '900', fontSize: 14}}>
+                Hello, {value}
+              </Text>
+              <Text style={{color: 'black', fontSize: 16}}>
+                Find Your Dream Destination
+              </Text>
+            </View>
+            <View style={styles.imgcontainer}></View>
+          </View>
+
+          {/* Logout button */}
+          {/* <View style={{'marginLeft': 100, 'width': 50}}>
+            <TouchableOpacity
+             style={{'backgroundColor':'red'}}
+             onPress={ async()=>{
+                await AsyncStorage.clear()
+                console.log("cleared");
+            }}>
+              <Text
+                style={{'Color': 'red'}}
+              >Press Here</Text>
+            </TouchableOpacity>
+          </View> */}
+
           <View style={styles.explore}>
             <Text style={styles.headone}>Explore</Text>
             <View style={styles.category}>
@@ -57,7 +165,10 @@ const Homepage = () => {
               <View style={styles.catImage}>
                 <Image style={styles.Beach} source={Culture} />
                 <Text style={styles.cattext}>CULTURE &</Text>
-                <Text style={{color: 'black', fontSize: 9, textAlign: 'center'}}>HERITAGE</Text>
+                <Text
+                  style={{color: 'black', fontSize: 9, textAlign: 'center'}}>
+                  HERITAGE
+                </Text>
               </View>
               <View style={styles.catImage}>
                 <Image style={styles.Beach} source={Adventure} />
@@ -83,17 +194,13 @@ const Homepage = () => {
             </View>
 
             <View style={styles.listMain}>
-
               {/* gid 1 */}
               <View style={styles.listSub}>
                 <View style={styles.list}>
                   <Image style={styles.listImg} source={Chalal} />
                   <View style={styles.listContent}>
                     <View style={styles.contImg}>
-                      <Image
-                        style={styles.mapicon} 
-                        source={MapIcon} 
-                      />
+                      <Image style={styles.mapicon} source={MapIcon} />
                     </View>
                     <View style={styles.contTitle}>
                       <Text style={styles.contplace}>Chalal</Text>
@@ -105,10 +212,7 @@ const Homepage = () => {
                   <Image style={styles.listImg} source={Dharamshala} />
                   <View style={styles.listContent}>
                     <View style={styles.contImg}>
-                      <Image
-                        style={styles.mapicon} 
-                        source={MapIcon} 
-                      />
+                      <Image style={styles.mapicon} source={MapIcon} />
                     </View>
                     <View style={styles.contTitle}>
                       <Text style={styles.contplace}>Dharamshala</Text>
@@ -124,10 +228,7 @@ const Homepage = () => {
                   <Image style={styles.listImg} source={Hampi} />
                   <View style={styles.listContent}>
                     <View style={styles.contImg}>
-                      <Image
-                        style={styles.mapicon} 
-                        source={MapIcon} 
-                      />
+                      <Image style={styles.mapicon} source={MapIcon} />
                     </View>
                     <View style={styles.contTitle}>
                       <Text style={styles.contplace}>Hampi</Text>
@@ -139,10 +240,7 @@ const Homepage = () => {
                   <Image style={styles.listImg} source={Jaipur} />
                   <View style={styles.listContent}>
                     <View style={styles.contImg}>
-                      <Image
-                        style={styles.mapicon} 
-                        source={MapIcon} 
-                      />
+                      <Image style={styles.mapicon} source={MapIcon} />
                     </View>
                     <View style={styles.contTitle}>
                       <Text style={styles.contplace}>Jaipur</Text>
@@ -158,10 +256,7 @@ const Homepage = () => {
                   <Image style={styles.listImg} source={Jibhi} />
                   <View style={styles.listContent}>
                     <View style={styles.contImg}>
-                      <Image
-                        style={styles.mapicon} 
-                        source={MapIcon} 
-                      />
+                      <Image style={styles.mapicon} source={MapIcon} />
                     </View>
                     <View style={styles.contTitle}>
                       <Text style={styles.contplace}>Jibhi</Text>
@@ -173,10 +268,7 @@ const Homepage = () => {
                   <Image style={styles.listImg} source={Kasol} />
                   <View style={styles.listContent}>
                     <View style={styles.contImg}>
-                      <Image
-                        style={styles.mapicon} 
-                        source={MapIcon} 
-                      />
+                      <Image style={styles.mapicon} source={MapIcon} />
                     </View>
                     <View style={styles.contTitle}>
                       <Text style={styles.contplace}>Kasol</Text>
@@ -192,10 +284,7 @@ const Homepage = () => {
                   <Image style={styles.listImg} source={Kovalam} />
                   <View style={styles.listContent}>
                     <View style={styles.contImg}>
-                      <Image
-                        style={styles.mapicon} 
-                        source={MapIcon} 
-                      />
+                      <Image style={styles.mapicon} source={MapIcon} />
                     </View>
                     <View style={styles.contTitle}>
                       <Text style={styles.contplace}>Kovalam</Text>
@@ -207,10 +296,7 @@ const Homepage = () => {
                   <Image style={styles.listImg} source={Mahabalipuram} />
                   <View style={styles.listContent}>
                     <View style={styles.contImg}>
-                      <Image
-                        style={styles.mapicon} 
-                        source={MapIcon} 
-                      />
+                      <Image style={styles.mapicon} source={MapIcon} />
                     </View>
                     <View style={styles.contTitle}>
                       <Text style={styles.contplace}>Mahabalipuram</Text>
@@ -226,10 +312,7 @@ const Homepage = () => {
                   <Image style={styles.listImg} source={Manali} />
                   <View style={styles.listContent}>
                     <View style={styles.contImg}>
-                      <Image
-                        style={styles.mapicon} 
-                        source={MapIcon} 
-                      />
+                      <Image style={styles.mapicon} source={MapIcon} />
                     </View>
                     <View style={styles.contTitle}>
                       <Text style={styles.contplace}>Manali</Text>
@@ -241,10 +324,7 @@ const Homepage = () => {
                   <Image style={styles.listImg} source={Mysore} />
                   <View style={styles.listContent}>
                     <View style={styles.contImg}>
-                      <Image
-                        style={styles.mapicon} 
-                        source={MapIcon} 
-                      />
+                      <Image style={styles.mapicon} source={MapIcon} />
                     </View>
                     <View style={styles.contTitle}>
                       <Text style={styles.contplace}>Mysore</Text>
@@ -260,10 +340,7 @@ const Homepage = () => {
                   <Image style={styles.listImg} source={Nainital} />
                   <View style={styles.listContent}>
                     <View style={styles.contImg}>
-                      <Image
-                        style={styles.mapicon} 
-                        source={MapIcon} 
-                      />
+                      <Image style={styles.mapicon} source={MapIcon} />
                     </View>
                     <View style={styles.contTitle}>
                       <Text style={styles.contplace}>Nainital</Text>
@@ -275,10 +352,7 @@ const Homepage = () => {
                   <Image style={styles.listImg} source={Pondicherry} />
                   <View style={styles.listContent}>
                     <View style={styles.contImg}>
-                      <Image
-                        style={styles.mapicon} 
-                        source={MapIcon} 
-                      />
+                      <Image style={styles.mapicon} source={MapIcon} />
                     </View>
                     <View style={styles.contTitle}>
                       <Text style={styles.contplace}>Pondicherry</Text>
@@ -294,10 +368,7 @@ const Homepage = () => {
                   <Image style={styles.listImg} source={Pushkar} />
                   <View style={styles.listContent}>
                     <View style={styles.contImg}>
-                      <Image
-                        style={styles.mapicon} 
-                        source={MapIcon} 
-                      />
+                      <Image style={styles.mapicon} source={MapIcon} />
                     </View>
                     <View style={styles.contTitle}>
                       <Text style={styles.contplace}>Pushkar</Text>
@@ -309,10 +380,7 @@ const Homepage = () => {
                   <Image style={styles.listImg} source={Rishikesh} />
                   <View style={styles.listContent}>
                     <View style={styles.contImg}>
-                      <Image
-                        style={styles.mapicon} 
-                        source={MapIcon} 
-                      />
+                      <Image style={styles.mapicon} source={MapIcon} />
                     </View>
                     <View style={styles.contTitle}>
                       <Text style={styles.contplace}>Rishikesh</Text>
@@ -328,10 +396,7 @@ const Homepage = () => {
                   <Image style={styles.listImg} source={Goa} />
                   <View style={styles.listContent}>
                     <View style={styles.contImg}>
-                      <Image
-                        style={styles.mapicon} 
-                        source={MapIcon} 
-                      />
+                      <Image style={styles.mapicon} source={MapIcon} />
                     </View>
                     <View style={styles.contTitle}>
                       <Text style={styles.contplace}>Goa</Text>
@@ -343,10 +408,7 @@ const Homepage = () => {
                   <Image style={styles.listImg} source={Shillong} />
                   <View style={styles.listContent}>
                     <View style={styles.contImg}>
-                      <Image
-                        style={styles.mapicon} 
-                        source={MapIcon} 
-                      />
+                      <Image style={styles.mapicon} source={MapIcon} />
                     </View>
                     <View style={styles.contTitle}>
                       <Text style={styles.contplace}>Shillong</Text>
@@ -362,10 +424,7 @@ const Homepage = () => {
                   <Image style={styles.listImg} source={Udaipur} />
                   <View style={styles.listContent}>
                     <View style={styles.contImg}>
-                      <Image
-                        style={styles.mapicon} 
-                        source={MapIcon} 
-                      />
+                      <Image style={styles.mapicon} source={MapIcon} />
                     </View>
                     <View style={styles.contTitle}>
                       <Text style={styles.contplace}>Udaipur</Text>
@@ -377,10 +436,7 @@ const Homepage = () => {
                   <Image style={styles.listImg} source={Varanasi} />
                   <View style={styles.listContent}>
                     <View style={styles.contImg}>
-                      <Image
-                        style={styles.mapicon} 
-                        source={MapIcon} 
-                      />
+                      <Image style={styles.mapicon} source={MapIcon} />
                     </View>
                     <View style={styles.contTitle}>
                       <Text style={styles.contplace}>Varanasi</Text>
@@ -396,10 +452,7 @@ const Homepage = () => {
                   <Image style={styles.listImg} source={Varkala} />
                   <View style={styles.listContent}>
                     <View style={styles.contImg}>
-                      <Image
-                        style={styles.mapicon} 
-                        source={MapIcon} 
-                      />
+                      <Image style={styles.mapicon} source={MapIcon} />
                     </View>
                     <View style={styles.contTitle}>
                       <Text style={styles.contplace}>Varkala</Text>
@@ -411,10 +464,7 @@ const Homepage = () => {
                   <Image style={styles.listImg} source={Ziro} />
                   <View style={styles.listContent}>
                     <View style={styles.contImg}>
-                      <Image
-                        style={styles.mapicon} 
-                        source={MapIcon} 
-                      />
+                      <Image style={styles.mapicon} source={MapIcon} />
                     </View>
                     <View style={styles.contTitle}>
                       <Text style={styles.contplace}>Ziro</Text>
@@ -423,7 +473,6 @@ const Homepage = () => {
                   </View>
                 </View>
               </View>
-              
             </View>
           </View>
         </ScrollView>
@@ -437,6 +486,33 @@ export default Homepage;
 const styles = StyleSheet.create({
   scrollview: {
     flexGrow: 1,
+  },
+  navbar_maindiv: {
+    position: 'absolute',
+    top: 0,
+    zIndex: 10,
+    width: '100%',
+    display: 'flex',
+    justifyContent: 'space-between',
+    flexDirection: 'row',
+  },
+  menubar: {
+    width: 35,
+    height: 35,
+    margin: 10,
+  },
+  Wishlist: {
+    width: 35,
+    height: 35,
+    margin: 10,
+  },
+  topbar: {
+    marginTop: 50,
+    width: '90%',
+    marginLeft: '5%',
+  },
+  explore: {
+    marginTop: 10,
   },
   dummy: {
     color: 'black',
@@ -515,9 +591,9 @@ const styles = StyleSheet.create({
   listMain: {},
   listSub: {
     marginLeft: 25,
-    marginRight:25,
+    marginRight: 25,
     flexDirection: 'row',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
   },
   list: {
     width: '48%',
@@ -526,8 +602,8 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
   listImg: {
-    width: "100%",
-    height: "100%",
+    width: '100%',
+    height: '100%',
     resizeMode: 'cover',
     borderRadius: 20,
   },
@@ -535,7 +611,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row-reverse',
     justifyContent: 'space-between',
-    position:'absolute',
+    position: 'absolute',
     backgroundColor: 'rgba(0,0,0,.5)',
     bottom: 0,
     width: '100%',
@@ -544,16 +620,16 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: 20,
     borderBottomRightRadius: 20,
   },
-  contTitle:{
+  contTitle: {
     zIndex: 1,
     marginLeft: 15,
   },
-  contplace:{
-    color:'white',
-    fontWeight:'900',
- },
-  contstate:{
-    color:'white',
+  contplace: {
+    color: 'white',
+    fontWeight: '900',
+  },
+  contstate: {
+    color: 'white',
   },
   mapicon: {
     width: 20,
@@ -563,11 +639,11 @@ const styles = StyleSheet.create({
     marginTop: -20,
     display: 'none',
   },
-  line:{
+  line: {
     marginLeft: 25,
     marginRight: 25,
-    height:1,
+    height: 1,
     backgroundColor: 'rgb(207, 216, 220)',
     marginTop: 10,
-  }
+  },
 });

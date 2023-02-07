@@ -21,14 +21,39 @@ import {
   Sunset,
 } from '../assets/images/daringbadi';
 import Timeline from 'react-native-timeline-flatlist';
+import Navbar from './navbar';
+import { Navicon, Wishlist } from '../assets/images';
 
 const screenHeight = Dimensions.get('window').height;
 const screenWidth = Dimensions.get('window').width;
 
-const Iternary = () => {
+const Iternary = (props) => {
+  const {navigation} = props
   const [active, setActive] = useState(1);
 
   return (
+    <>
+    {/* navbar */}
+     <View style={styles.navbarmain} transparent={true}>
+              <View style={styles.navbar_maindiv}>
+                <TouchableOpacity
+                  activeOpacity={1}
+                  onPress={() => {
+                    navigation.navigate('HOMEPAGE')
+                  }}>
+                  <Image style={styles.menubar} source={Navicon} />
+                </TouchableOpacity>
+                <TouchableOpacity
+                  activeOpacity={1}
+                  onPress={() => {
+                    navigation.navigate('MYPLAN')
+                  }}
+                  >
+                  <Image style={styles.Wishlist} source={Wishlist} />
+                </TouchableOpacity>
+              </View>
+            </View>
+
     <View style={styles.maindiv}>
       <View style={styles.imgHead}>
         <Image
@@ -48,13 +73,13 @@ const Iternary = () => {
         <View style={styles.navButtons}>
           <TouchableOpacity
             onPress={() => setActive(1)}
-            style={styles.daysButton}>
+            style={active === 1 ? styles.daysButtonActive : styles.daysButtoninActive }>
             <Text style={styles.daysButtontext}>DAY 1</Text>
           </TouchableOpacity>
           <TouchableOpacity
-            style={styles.daysButton}
+            style={active === 2 ? styles.daysButtonActive : styles.daysButtoninActive }
             onPress={() => setActive(2)}>
-            <Text style={styles.daysButtontext}>DAY 2</Text>
+            <Text style={ styles.daysButtontext}>DAY 2</Text>
           </TouchableOpacity>
         </View>
         <View style={styles.navAddButtons}>
@@ -63,6 +88,7 @@ const Iternary = () => {
       </View>
       <ScrollView>{active === 1 ? <ExploreOne /> : <ExploreTwo />}</ScrollView>
     </View>
+    </>
   );
 };
 
@@ -471,6 +497,26 @@ export const ExploreTwo = () => {
 export default Iternary;
 
 const styles = StyleSheet.create({
+  navbar_maindiv: {
+    position: 'absolute',
+    top: 0,
+    zIndex: 10,
+    width: '100%',
+    display: 'flex',
+    justifyContent: 'space-between',
+    flexDirection: 'row',
+  },
+  menubar: {
+    width: 35,
+    height: 35,
+    margin: 10,
+  },
+  Wishlist: {
+    width: 35,
+    height: 35,
+    margin: 10,
+  },
+
   maindiv: {
     width: screenWidth,
     height: screenHeight,
@@ -515,7 +561,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
-  daysButton: {
+
+  daysButtoninActive: {
     backgroundColor: 'black',
     marginTop: 10,
     marginLeft: 10,
@@ -529,6 +576,22 @@ const styles = StyleSheet.create({
     borderColor: 'rgb(3, 155, 229)',
     borderWidth: 1,
   },
+
+  daysButtonActive: {
+    backgroundColor: 'black',
+    marginTop: 10,
+    marginLeft: 10,
+    height: 32,
+    paddingTop: 5,
+    paddingBottom: 5,
+    paddingLeft: 25,
+    paddingRight: 25,
+    borderRadius: 4,
+    backgroundColor: '#CFD8DC',
+    borderColor: 'rgb(3, 155, 229)',
+    borderWidth: 1,
+  },
+
   daysButtontext: {
     color: 'rgb(3, 155, 229)',
     fontWeight: '900',

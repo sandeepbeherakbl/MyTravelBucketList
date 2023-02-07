@@ -6,20 +6,47 @@ import {
   Dimensions,
   Image,
   Button,
+  TouchableOpacity,
 } from 'react-native';
 import React from 'react';
 import {Daringbadi, Kedarnath} from '../assets/images/Myplans';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import {Navicon, Wishlist} from '../assets/images';
+import Navbar from './navbar';
 
 const screenHeight = Dimensions.get('window').height;
 const screenWidth = Dimensions.get('window').width;
 
-const Myplan = () => {
+const Myplan = props => {
+  const {navigation} = props;
   return (
-    <View style={{height: '100%', width: '100%'}}>
-      <View style={styles.planpage}>
+    <>
+      <View style={{height: '100%', width: '100%'}}>
         <View style={styles.maindiv}>
-          <ScrollView horizontal={true} showsHorizontalScrollIndicator={true}
-  pagingEnabled={true}>
+          <View style={styles.navbarmain} transparent={true}>
+              <View style={styles.navbar_maindiv}>
+                <TouchableOpacity
+                  activeOpacity={1}
+                  onPress={() => {
+                    navigation.navigate('HOMEPAGE')
+                  }}>
+                  <Image style={styles.menubar} source={Navicon} />
+                </TouchableOpacity>
+                <TouchableOpacity
+                  activeOpacity={1}
+                  onPress={() => {
+                    navigation.navigate('MYPLAN')
+                  }}>
+                  <Image style={styles.Wishlist} source={Wishlist} />
+                </TouchableOpacity>
+              </View>
+            </View>
+
+        
+          <ScrollView
+            horizontal={true}
+            showsHorizontalScrollIndicator={true}
+            pagingEnabled={true}>
             {/* img 1 */}
             <View style={styles.imgone}>
               <View style={styles.imagecont}>
@@ -45,7 +72,13 @@ const Myplan = () => {
                 </View>
               </View>
               <View style={styles.expbutton}>
-                <Button color="rgb(41, 182, 246)" title="Explore" />
+                <Button
+                  color="rgb(41, 182, 246)"
+                  onPress={() => {
+                    navigation.navigate('ITERNARY');
+                  }}
+                  title="Explore"
+                />
               </View>
             </View>
 
@@ -65,7 +98,9 @@ const Myplan = () => {
               <View style={styles.imagecontent}>
                 <View style={styles.contentdiv}>
                   <Text style={styles.titelcontent}>Kedarntah</Text>
-                  <Text style={styles.subcontent}>one of the 12 Jyotir Lingams</Text>
+                  <Text style={styles.subcontent}>
+                    one of the 12 Jyotir Lingams
+                  </Text>
                   <Text style={styles.desccontent}>
                     Kedarnath is a holy Hindu town located in Rudraprayag
                     district of Uttarakhand in India
@@ -79,7 +114,7 @@ const Myplan = () => {
           </ScrollView>
         </View>
       </View>
-    </View>
+    </>
   );
 };
 
@@ -90,6 +125,25 @@ const styles = StyleSheet.create({
     height: screenHeight,
     width: screenWidth,
     backgroundColor: 'black',
+  },
+  navbar_maindiv: {
+    position: 'absolute',
+    top: 0,
+    zIndex: 10,
+    width: '100%',
+    display: 'flex',
+    justifyContent: 'space-between',
+    flexDirection: 'row',
+  },
+  menubar: {
+    width: 35,
+    height: 35,
+    margin: 10,
+  },
+  Wishlist: {
+    width: 35,
+    height: 35,
+    margin: 10,
   },
   maindiv: {
     width: screenWidth,

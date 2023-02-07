@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   ImageBackground,
   StyleSheet,
@@ -7,13 +7,56 @@ import {
   Image,
   Dimensions,
   Button,
+  TextInput,
+  Alert,
+  BackHandler
 } from 'react-native';
 import {Loginimg} from '../assets/images';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const screenHeight = Dimensions.get('window').height;
 const screenWidth = Dimensions.get('window').width;
 
-const Welcome = () => {
+const Welcome = (props) => {
+  const {navigation} = props;
+  const [userName , setUserName] = useState("")
+  const [value, setValue] = useState('')
+  const [name, setName] = useState(false)
+  
+  const saveValue = async (name) =>{
+    if(name) {
+      await AsyncStorage.setItem("user", name);
+      setName(true)
+    }else{
+      alert('Enter Your Name')
+    }
+  }
+
+  React.useEffect(() => {
+    if(name){
+      navigation.navigate('HOMEPAGE')
+    }
+  }, [name])
+
+  React.useEffect(() => {
+    const backAction = () => {
+      Alert.alert('Hold on!', 'Are you sure you want to go exit?', [
+        {
+          text: 'Cancel',
+          onPress: () => null,
+          style: 'cancel',
+        },
+        {text: 'YES', onPress: () => BackHandler.exitApp()},
+      ]);
+      return true;
+    };
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      backAction,
+    );
+    return () => backHandler.remove();
+  }, []);
+
   return (
     <>
       <View style={styles.container}>
@@ -24,12 +67,37 @@ const Welcome = () => {
           <View style={styles.textBox}>
             <Text style={styles.textone}>Get Ready For</Text>
             <Text style={styles.texttwo}>New Adventure</Text>
-            <Text style={styles.textthree}>Pack your things and make more memories outdoor</Text>
+            <Text style={styles.textthree}>
+              Pack your things and make more memories outdoor
+            </Text>
           </View>
+
+          {/* Input Box */}
+          <View style={styles.inputBox}>
+            <TextInput 
+              style={styles.input} 
+              value={userName}
+              onChangeText={(text) => {setUserName(text)}}
+              placeholder="Enter Your First Name" 
+            />
+          </View>
+
           <View style={styles.styleLoginBtn}>
-            <Button
-            title="Lets Go" 
-            color="#ff5c5c"
+            <Button 
+            onPress={
+            //   () => {
+            //   if(saveValue(userName)){
+            //     // navigation.navigate('HOMEPAGE')
+            //   }
+            //   else{
+            //     alert('Enter Your Name')
+            //   }
+            // }
+            () => {
+              saveValue(userName)
+            }
+          }
+            title="Lets Go" color="#ff5c5c" 
             />
           </View>
         </ImageBackground>
@@ -46,7 +114,7 @@ const styles = StyleSheet.create({
     width: screenWidth,
     justifyContent: 'center',
   },
-  textBox:{
+  textBox: {
     marginTop: 100,
   },
   textone: {
@@ -55,7 +123,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'center',
   },
-  texttwo:{
+  texttwo: {
     color: 'white',
     fontSize: 28,
     marginTop: 0,
@@ -63,7 +131,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginBottom: 5,
   },
-  textthree:{
+  textthree: {
     color: 'white',
     fontSize: 12,
     fontWeight: 'bold',
@@ -76,5 +144,20 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'flex-end',
     marginBottom: 36,
+  },
+  inputBox:{
+    paddingTop: 100,
+    width: '80%',
+    marginLeft: '10%',
+    marginRight: '10%',
+  },
+  input: {
+    height: 40,
+    margin: 12,
+    borderWidth: 1,
+    // padding: 20,
+    fontWeight: 'bold',
+    borderColor: 'white',
+    color: 'white',
   },
 });

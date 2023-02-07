@@ -1,31 +1,31 @@
+import { log } from 'console';
 import React from 'react';
-import {StyleSheet, Text, Image, View, Modal, Button,SafeAreaView} from 'react-native';
+import {StyleSheet, Text, Image, View, Modal, Button,SafeAreaView,TouchableOpacity} from 'react-native';
 import {Navicon, Wishlist} from '../assets/images';
 
-const Navbar = () => {
-
-    const rightButtonConfig = {
-        title: 'Next',
-        handler: () => alert('hello!'),
-      };
-      
-      const titleConfig = {
-        title: 'Hello, world',
-      };
-
+const Navbar = (props) => {
+  const navigation = props;
 
   return (
     <>
-      <View style={styles.navbarmain} transparent={true}>
-        <View style={styles.navbar_maindiv}>
-          <View>
-            <Image style={styles.menubar} source={Navicon} />
-          </View>
-          <View>
-            <Image style={styles.Wishlist} source={Wishlist} />
-          </View>
-        </View>
-      </View>
+       <View style={styles.navbarmain} transparent={true}>
+              <View style={styles.navbar_maindiv}>
+                <TouchableOpacity
+                  activeOpacity={1}
+                  onPress={() => {
+                    navigation.navigate('HOMEPAGE')
+                  }}>
+                  <Image style={styles.menubar} source={Navicon} />
+                </TouchableOpacity>
+                <TouchableOpacity
+                  activeOpacity={1}
+                  onPress={() => {
+                    navigation.navigate('MYPLAN')
+                  }}>
+                  <Image style={styles.Wishlist} source={Wishlist} />
+                </TouchableOpacity>
+              </View>
+            </View>
 
     </>
   );
@@ -34,10 +34,11 @@ const Navbar = () => {
 export default Navbar;
 
 const styles = StyleSheet.create({
-  navbarmain: {
-    position: 'relative',
-  },
   navbar_maindiv: {
+    position: 'absolute',
+    top: 0,
+    zIndex: 10,
+    width: '100%',
     display: 'flex',
     justifyContent: 'space-between',
     flexDirection: 'row',
